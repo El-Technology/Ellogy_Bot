@@ -15,10 +15,8 @@ export const Header = () => {
             borderBottom: '6px solid #C4C4C4 80%'
         }}
     >
-      
         <Logo />
-        
-        <img src={require('../../assets/icons/user.png')} alt="Not found" />
+        <img style={{ cursor: 'pointer' }} src={require('../../assets/icons/user.png')} alt="Not found" />
     </Box>
   )
 }

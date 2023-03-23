@@ -20,7 +20,9 @@ export const MainPageLayout = ({ children }: { children: ReactNode }) => {
             boxSizing: 'border-box',
           }}
         >
-         {children}
+          <Box position="relative">
+          {children}
+          </Box>
         </Box>
 
         <Sidebar />
