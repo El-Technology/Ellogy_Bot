@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import { OpenAIApi, Configuration } from 'openai';
 import { useMemo, useState } from 'react';
 
+const propmtPrefix = 'Create 5 SMART goals based on the following job description: ';
+
 interface FormValues {
     title: string;
     question: string;
@@ -35,7 +37,7 @@ export const Form = () => {
     try {
         const result: any = await openaiInstance.createCompletion(
             {
-                prompt: request.prompt,
+                prompt: propmtPrefix + request.prompt,
                 model:  'text-davinci-003',
                 temperature: request.temperature,
                 max_tokens: request.max_tokens,
