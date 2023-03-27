@@ -2,6 +2,7 @@ import { Backdrop, Button, CircularProgress, Stack, TextField, Typography } from
 import { useForm } from "react-hook-form";
 import { OpenAIApi, Configuration } from 'openai';
 import { useMemo, useState } from 'react';
+import './Form.styles.scss';
 
 const propmtPrefix = 'Create 5 SMART goals in English and Arabic based on the following job description: ';
 
@@ -14,7 +15,6 @@ export const Form = () => {
   const { register, handleSubmit } = useForm<FormValues>();
   const [englishCompletionResult, setEnglishCompletionResult] = useState('');
   const [arabicCompletionResult, setArabicCompletionResult] = useState('');
-  const [title, setTitle] = useState('')
   const [isLoading, setIsLoading] = useState(false);
 
 
@@ -29,7 +29,7 @@ export const Form = () => {
       model: "text-davinci-003",
       prompt: propmtPrefix + data.question,
       temperature: 0.9,
-      max_tokens: 500,
+      max_tokens: 800,
       top_p: 1,
       frequency_penalty: 0,
       presence_penalty: 0.6,
@@ -38,11 +38,10 @@ export const Form = () => {
   
     try {
         const result: any = await openaiInstance.createCompletion(request, { headers: undefined });
-        const modifiedResult =(result.data.choices[0].text as string).slice(1).replaceAll('\n', '<br />').split('<br /><br />');
-        console.log('modifiedResult', modifiedResult);
-        setTitle(modifiedResult[0])
-        setEnglishCompletionResult( modifiedResult[1]);
-        setArabicCompletionResult(modifiedResult[2]);
+        const choice = result.data.choices[0].text;
+        const index = choice.indexOf('Arabic');
+        setEnglishCompletionResult((choice.slice(0, index) as string).replaceAll('\n', '<br />'));
+        setArabicCompletionResult((choice.slice(index) as string).replaceAll('\n', '<br />'));
     }
     catch (error) {
         console.error(error);
@@ -69,7 +68,7 @@ export const Form = () => {
         </Backdrop>
     }
 
-        <Stack sx={{ pointerEvents: isLoading ? 'none' : 'all', }}>
+        <Stack sx={{ pointerEvents: isLoading ? 'none' : 'all', mb: '15px' }}>
             <Typography
                 sx={{
                     mb: '26px',
@@ -134,19 +133,17 @@ export const Form = () => {
                 </Button>
             </form>
             <div
-                placeholder="Your suggested SMART Objectives will be shown here"
-                style={{
-                    height: "170px",
-                    overflow: 'auto',
-                    borderRadius: '4px',
-                    border: '1px solid rgba(0, 0, 0, 0.23)',
-                    padding: '14px'
-                }}
+                className="form__output"
             >
-                <p style={{ marginTop: 0 }}>{ title }</p>
-                <div dangerouslySetInnerHTML={{ __html: englishCompletionResult }} />
-                <br />
-                <div dir="rtl" dangerouslySetInnerHTML={{ __html: arabicCompletionResult }} />
+                {
+                    englishCompletionResult && arabicCompletionResult ? (
+                    <>
+                        <div dangerouslySetInnerHTML={{ __html: englishCompletionResult }} />
+                        <br />
+                        <div dir="rtl" dangerouslySetInnerHTML={{ __html: arabicCompletionResult }} />
+                    </>
+                    ) : <div className="form__output__placeholder">Your suggested SMART Objectives will be shown here</div>
+                }
             </div>
         </Stack>
     </>
