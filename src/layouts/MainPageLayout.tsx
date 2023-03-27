@@ -10,7 +10,8 @@ export const MainPageLayout = ({ children }: { children: ReactNode }) => {
         <Box
           sx={{
             width: 'calc(100vw - 91px)',
-            height: 'calc(100vh - 70px)',
+            height: 'auto',
+            minHeight: 'calc(100vh - 70px)',
             position: 'absolute',
             left: '91px',
             paddingLeft: '70px',

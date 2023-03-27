@@ -4,7 +4,7 @@ import { OpenAIApi, Configuration } from 'openai';
 import { useMemo, useState } from 'react';
 import './Form.styles.scss';
 
-const propmtPrefix = 'Create 5 SMART goals in English and Arabic based on the following job description: ';
+const propmtPrefix = 'Create 5 SMART goals separate in English and separate in Arabic based on the following job description: ';
 
 interface FormValues {
     title: string;
@@ -27,9 +27,9 @@ export const Form = () => {
     setIsLoading(true);
     const request = {
       model: "text-davinci-003",
-      prompt: propmtPrefix + data.question,
+      prompt: propmtPrefix + data.question + '.',
       temperature: 0.9,
-      max_tokens: 800,
+      max_tokens: 650,
       top_p: 1,
       frequency_penalty: 0,
       presence_penalty: 0.6,
@@ -40,8 +40,10 @@ export const Form = () => {
         const result: any = await openaiInstance.createCompletion(request, { headers: undefined });
         const choice = result.data.choices[0].text;
         const index = choice.indexOf('Arabic');
-        setEnglishCompletionResult((choice.slice(0, index) as string).replaceAll('\n', '<br />'));
-        setArabicCompletionResult((choice.slice(index) as string).replaceAll('\n', '<br />'));
+        setEnglishCompletionResult((choice.slice(0, index) as string).replace('\n', '')
+            .replaceAll('\n', '<br />').replace('English', ''));
+        setArabicCompletionResult((choice.slice(index) as string).replace('\n', '')
+            .replaceAll('\n', '<br />').replace('Arabic', ''));
     }
     catch (error) {
         console.error(error);
