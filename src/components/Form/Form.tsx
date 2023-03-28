@@ -40,10 +40,14 @@ export const Form = () => {
         const result: any = await openaiInstance.createCompletion(request, { headers: undefined });
         const choice = result.data.choices[0].text;
         const index = choice.indexOf('Arabic');
-        setEnglishCompletionResult((choice.slice(0, index) as string).replace('\n', '')
-            .replaceAll('\n', '<br />').replace('English', ''));
-        setArabicCompletionResult((choice.slice(index) as string).replace('\n', '')
-            .replaceAll('\n', '<br />').replace('Arabic', ''));
+        setEnglishCompletionResult((choice.slice(0, index) as string).replace('\n\n', '')
+            .replace(':', '')
+            .replace('English', '')
+            .replaceAll('\n', '<br />'));
+        setArabicCompletionResult((choice.slice(index) as string).replace('\n\n', '')
+            .replace(':', '')
+            .replace('Arabic', '')
+            .replaceAll('\n', '<br />').replace('SMART Goals:', 'الأهداف:'));
     }
     catch (error) {
         console.error(error);
@@ -106,8 +110,9 @@ export const Form = () => {
                     sx={{
                         mb: '5px',
                         '& .MuiInputBase-root': {
-                            height: '198px',
+                            height: '150px',
                             '& textarea': {
+                                overflow: 'unset !important',
                                 height: '100% !important'
                             }
                         }
