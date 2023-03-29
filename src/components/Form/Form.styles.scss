@@ -1,6 +1,7 @@
 .form {
     &__output {
-        height: 150px;
+        height: 50vh;
+        width: 48%;
         overflow: auto;
         border-radius: 4px;
         border: 1px solid rgba(0, 0, 0, 0.23);

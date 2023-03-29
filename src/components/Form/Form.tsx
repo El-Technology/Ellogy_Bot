@@ -1,4 +1,4 @@
-import { Backdrop, Button, CircularProgress, Stack, TextField, Typography } from "@mui/material"
+import { Backdrop, Box, Button, CircularProgress, Stack, TextField, Typography } from "@mui/material"
 import { useForm } from "react-hook-form";
 import { OpenAIApi, Configuration } from 'openai';
 import { useMemo, useState } from 'react';
@@ -12,7 +12,7 @@ interface FormValues {
 }
 
 export const Form = () => {
-  const { register, handleSubmit } = useForm<FormValues>();
+  const { register, handleSubmit, watch } = useForm<FormValues>();
   const [englishCompletionResult, setEnglishCompletionResult] = useState('');
   const [arabicCompletionResult, setArabicCompletionResult] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -46,8 +46,14 @@ export const Form = () => {
             .replaceAll('\n', '<br />'));
         setArabicCompletionResult((choice.slice(index) as string).replace('\n\n', '')
             .replace(':', '')
+            .replace('-', '')
+            .replace(' - ', '')
             .replace('Arabic', '')
-            .replaceAll('\n', '<br />').replace('SMART Goals:', 'الأهداف:'));
+            .replaceAll('\n', '<br />')
+            .replace('SMART', '')
+            .replace('SMART Goals', 'الأهداف:')
+            .replace('Goals', 'الأهداف:')
+            );
     }
     catch (error) {
         console.error(error);
@@ -62,7 +68,7 @@ export const Form = () => {
     {
         isLoading
         &&
-        <Backdrop open={isLoading}>
+        <Backdrop sx={{ zIndex: '2' }} open={isLoading}>
             <CircularProgress
                 sx={{
                     position: 'absolute',
@@ -92,38 +98,57 @@ export const Form = () => {
                     sx={{ mb: '41px' }}
                     placeholder="Title"
                 />
-                <TextField
-                    {...register("question")}
-                    multiline
-                    placeholder="Please describe your role within the organization here, or copy past the key activities from your job description."
-                    inputProps={{
-                        sx: {
-                            "& > textarea": {
-                                height: '100%',
-                            },
-                            shrink: true,
-                            "&::placeholder": {
-                                position: 'absolute',
+                <Box display="flex" justifyContent="space-between">
+                    <TextField
+                        {...register("question")}
+                        multiline
+                        dir={watch('question') && watch('question').match('[\u0600-\u06FF\u0750-\u077F]') ? 'rtl' : 'ltr'}
+                        placeholder="Please describe your role within the organization here, or copy past the key activities from your job description."
+                        inputProps={{
+                            sx: {
+                                "& > textarea": {
+                                    height: '100%',
+                                },
+                                shrink: true,
+                                "&::placeholder": {
+                                    position: 'absolute',
+                                }
                             }
-                        }
-                    }}
-                    sx={{
-                        mb: '5px',
-                        '& .MuiInputBase-root': {
-                            height: '150px',
-                            '& textarea': {
-                                overflow: 'unset !important',
-                                height: '100% !important'
+                        }}
+                        sx={{
+                            width: '48%',
+                            height: '100%',
+                            '& .MuiInputBase-root': {
+                                height: '50.3vh',
+                                boxSizing: 'content-box',
+                                padding: '14px',
+                                '& textarea': {
+                                    overflow: 'unset !important',
+                                    height: '100% !important'
+                                }
                             }
+                        }}
+                    />
+                    <div
+                    className="form__output"
+                    >
+                        {
+                            englishCompletionResult && arabicCompletionResult ? (
+                            <>
+                                <div dangerouslySetInnerHTML={{ __html: englishCompletionResult }} />
+                                <br />
+                                <div dir="rtl" dangerouslySetInnerHTML={{ __html: arabicCompletionResult }} />
+                            </>
+                            ) : <div className="form__output__placeholder">Your suggested SMART Objectives will be shown here</div>
                         }
-                    }}
-                />
+                    </div>
+                </Box>
                 <Button
                     type="submit"
                     sx={{
                         width: '131px',
                         height: '41px',
-                        mb: '15px',
+                        my: '15px',
                         alignSelf: 'flex-end',
                         bgcolor: '#000000',
                         color: 'white',
@@ -139,19 +164,6 @@ export const Form = () => {
                     Submit
                 </Button>
             </form>
-            <div
-                className="form__output"
-            >
-                {
-                    englishCompletionResult && arabicCompletionResult ? (
-                    <>
-                        <div dangerouslySetInnerHTML={{ __html: englishCompletionResult }} />
-                        <br />
-                        <div dir="rtl" dangerouslySetInnerHTML={{ __html: arabicCompletionResult }} />
-                    </>
-                    ) : <div className="form__output__placeholder">Your suggested SMART Objectives will be shown here</div>
-                }
-            </div>
         </Stack>
     </>
   )
