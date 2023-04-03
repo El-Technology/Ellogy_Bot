@@ -12,12 +12,17 @@ export const Sidebar = () => {
         height: 'calc(100vh - 70px)',
         paddingTop: '20px',
         paddingBottom: '16px',
-        display: 'flex',
+        display: {
+          xs: 'none',
+          sm: 'flex',
+          md: 'flex',
+          xl: 'flex'
+        },
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'space-between',
         backgroundColor: '#000000',
-        boxSizing: 'border-box'
+        boxSizing: 'border-box',
       }}
     >
       <Box

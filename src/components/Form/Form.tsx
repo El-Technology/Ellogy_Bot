@@ -95,74 +95,169 @@ export const Form = () => {
             <form style={{ display: 'flex', flexDirection: 'column' }} onSubmit={handleSubmit(onSubmit)}>
                 <TextField
                     {...register("title")}
-                    sx={{ mb: '41px' }}
+                    sx={{
+                        mb: {
+                            xs: '15px',
+                            sm: '26px',
+                            md: '26px',
+                            xl: '26px'
+                        },
+                     }}
                     placeholder="Title"
                 />
-                <Box display="flex" justifyContent="space-between">
-                    <TextField
-                        {...register("question")}
-                        multiline
-                        dir={watch('question') && watch('question').match('[\u0600-\u06FF\u0750-\u077F]') ? 'rtl' : 'ltr'}
-                        placeholder="Please describe your role within the organization here, or copy past the key activities from your job description."
-                        inputProps={{
-                            sx: {
-                                "& > textarea": {
-                                    height: '100%',
-                                },
-                                shrink: true,
-                                "&::placeholder": {
-                                    position: 'absolute',
-                                }
-                            }
-                        }}
-                        sx={{
-                            width: '48%',
-                            height: '100%',
-                            '& .MuiInputBase-root': {
-                                height: '50.3vh',
-                                boxSizing: 'content-box',
-                                padding: '14px',
-                                '& textarea': {
-                                    overflow: 'unset !important',
-                                    height: '100% !important'
-                                }
-                            }
-                        }}
-                    />
-                    <div
-                    className="form__output"
-                    >
-                        {
-                            englishCompletionResult && arabicCompletionResult ? (
-                            <>
-                                <div dangerouslySetInnerHTML={{ __html: englishCompletionResult }} />
-                                <br />
-                                <div dir="rtl" dangerouslySetInnerHTML={{ __html: arabicCompletionResult }} />
-                            </>
-                            ) : <div className="form__output__placeholder">Your suggested SMART Objectives will be shown here</div>
-                        }
-                    </div>
-                </Box>
-                <Button
-                    type="submit"
+                <Box
                     sx={{
-                        width: '131px',
-                        height: '41px',
-                        my: '15px',
-                        alignSelf: 'flex-end',
-                        bgcolor: '#000000',
-                        color: 'white',
-                        zIndex: 0,
-                        opacity: isLoading ? 0.5 : 1,
-                        "&:hover": {
-                            transition: '0.5s opacity',
-                            bgcolor: '#000000',
-                            opacity: '0.7'
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        flexDirection: {
+                            xs: 'column',
+                            sm: 'row',
+                            md: 'row',
+                            xl: 'row'
                         }
                     }}
+                >
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            height: {
+                                xs: '162px',
+                                sm: 'auto',
+                                md: 'auto',
+                                xl: 'auto'
+                            },
+                            width: {
+                                xs: '100%',
+                                sm: '48%',
+                                md: '48%',
+                                xl: '48%'
+                            },
+                            mb: {
+                                xs: '65px',
+                                sm: 'auto',
+                                md: 'auto',
+                                xl: 'auto'
+                            }
+                        }}
+                     >
+                        <TextField
+                            {...register("question")}
+                            multiline
+                            dir={watch('question') && watch('question').match('[\u0600-\u06FF\u0750-\u077F]') ? 'rtl' : 'ltr'}
+                            placeholder="Please describe your role within the organization here, or copy past the key activities from your job description."
+                            inputProps={{
+                                sx: {
+                                    "& > textarea": {
+                                        height: '100%',
+                                    },
+                                    shrink: true,
+                                    "&::placeholder": {
+                                        position: 'absolute',
+                                    }
+                                }
+                            }}
+                            sx={{
+                                width: '100%',
+                                height: '100%',
+                                '& .MuiInputBase-root': {
+                                    height: '50.3vh',
+                                    boxSizing: 'content-box',
+                                    padding: '14px',
+                                    '& textarea': {
+                                        overflow: 'unset !important',
+                                        height: '100% !important'
+                                    }
+                                }
+                            }}
+                        />
+                        <Button
+                        type="reset"
+                        sx={{
+                            width: '131px',
+                            minHeight: '41px',
+                            height: '41px',
+                            my: {
+                                xs: '10px',
+                                sm: '15px',
+                                md: '15px',
+                                xl: '15px',
+                            },
+                            alignSelf: 'flex-end',
+                            bgcolor: '#000000',
+                            color: 'white',
+                            zIndex: 0,
+                            opacity: isLoading ? 0.5 : 1,
+                            "&:hover": {
+                                transition: '0.5s opacity',
+                                bgcolor: '#000000',
+                                opacity: '0.7'
+                            }
+                        }}
+                        >
+                            Clear text
+                        </Button>
+                    </Box>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            height: {
+                                xs: '250px',
+                                sm: 'auto',
+                                md: 'auto',
+                                xl: 'auto'
+                            },
+                            width: {
+                                xs: '100%',
+                                sm: '48%',
+                                md: '48%',
+                                xl: '48%'
+                            }
+                        }}
                     >
-                    Submit
-                </Button>
+
+                        <div
+                        className="form__output"
+                        >
+                            {
+                                englishCompletionResult && arabicCompletionResult ? (
+                                <>
+                                    <div dangerouslySetInnerHTML={{ __html: englishCompletionResult }} />
+                                    <br />
+                                    <div dir="rtl" dangerouslySetInnerHTML={{ __html: arabicCompletionResult }} />
+                                </>
+                                ) : <div className="form__output__placeholder">Your suggested SMART Objectives will be shown here</div>
+                            }
+                        </div>
+                        <Button
+                            type="submit"
+                            sx={{
+                                width: '131px',
+                                height: '41px',
+                                my: {
+                                    xs: '10px',
+                                    sm: '15px',
+                                    md: '15px',
+                                    xl: '15px',
+                                },
+                                alignSelf: 'flex-end',
+                                bgcolor: '#000000',
+                                color: 'white',
+                                zIndex: 0,
+                                opacity: isLoading ? 0.5 : 1,
+                                "&:hover": {
+                                    transition: '0.5s opacity',
+                                    bgcolor: '#000000',
+                                    opacity: '0.7'
+                                }
+                            }}
+                        >
+                            Submit
+                        </Button>
+                    </Box>
+                </Box>
             </form>
         </Stack>
     </>

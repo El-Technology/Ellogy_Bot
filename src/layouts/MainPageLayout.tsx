@@ -9,11 +9,21 @@ export const MainPageLayout = ({ children }: { children: ReactNode }) => {
         <Header />
         <Box
           sx={{
-            width: 'calc(100vw - 91px)',
+            width: {
+              xs: '100%',
+              sm: 'calc(100vw - 91px)',
+              md: 'calc(100vw - 91px)',
+              xl: 'calc(100vw - 91px)',
+            },
             height: 'auto',
             minHeight: 'calc(100vh - 70px)',
             position: 'absolute',
-            left: '91px',
+            left: {
+              xs: 0,
+              sm: '91px',
+              md: '91px',
+              xl: '91px'
+            },
             paddingLeft: '70px',
             paddingTop: '30px',
             paddingRight: '82px',
