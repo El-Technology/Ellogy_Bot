@@ -24,9 +24,19 @@ export const MainPageLayout = ({ children }: { children: ReactNode }) => {
               md: '91px',
               xl: '91px'
             },
-            paddingLeft: '70px',
+            paddingLeft: {
+              xs: '30px',
+              sm: '70px',
+              md: '70px',
+              xl: '70px'
+            },
             paddingTop: '30px',
-            paddingRight: '82px',
+            paddingRight: {
+              xs: '30px',
+              sm: '82px',
+              md: '82px',
+              xl: '82px'
+            },
             backgroundColor: '#EFEFEF',
             boxSizing: 'border-box',
           }}

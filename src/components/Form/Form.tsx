@@ -11,6 +11,8 @@ interface FormValues {
     question: string;
 }
 
+const isMobile = document.documentElement.clientWidth < 500;
+
 export const Form = () => {
   const { register, handleSubmit, watch } = useForm<FormValues>();
   const [englishCompletionResult, setEnglishCompletionResult] = useState('');
@@ -62,6 +64,8 @@ export const Form = () => {
         setIsLoading(false);
     }    
   };
+
+  console.log('isMobile', isMobile);
 
   return (
     <>
@@ -122,6 +126,12 @@ export const Form = () => {
                         sx={{
                             display: 'flex',
                             flexDirection: 'column',
+                            justifyContent: {
+                                xs: 'flex-start',
+                                sm: 'flex-end',
+                                md: 'flex-end',
+                                xl: 'flex-end',
+                            },
                             height: {
                                 xs: '162px',
                                 sm: 'auto',
@@ -172,32 +182,70 @@ export const Form = () => {
                                 }
                             }}
                         />
-                        <Button
-                        type="reset"
-                        sx={{
-                            width: '131px',
-                            minHeight: '41px',
-                            height: '41px',
-                            my: {
-                                xs: '10px',
-                                sm: '15px',
-                                md: '15px',
-                                xl: '15px',
-                            },
-                            alignSelf: 'flex-end',
-                            bgcolor: '#000000',
-                            color: 'white',
-                            zIndex: 0,
-                            opacity: isLoading ? 0.5 : 1,
-                            "&:hover": {
-                                transition: '0.5s opacity',
-                                bgcolor: '#000000',
-                                opacity: '0.7'
-                            }
-                        }}
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between'
+                            }}
                         >
-                            Clear text
-                        </Button>
+                            <Button
+                            type="reset"
+                            sx={{
+                                width: '131px',
+                                minHeight: '41px',
+                                height: '41px',
+                                my: {
+                                    xs: '10px',
+                                    sm: '15px',
+                                    md: '15px',
+                                    xl: '15px',
+                                },
+                                alignSelf: {
+                                    xs: 'flex-start',
+                                    sm: 'flex-end',
+                                    md: 'flex-end',
+                                    xl: 'flex-end'
+                                },
+                                bgcolor: '#000000',
+                                color: 'white',
+                                zIndex: 0,
+                                opacity: isLoading ? 0.5 : 1,
+                                "&:hover": {
+                                    transition: '0.5s opacity',
+                                    bgcolor: '#000000',
+                                    opacity: '0.7'
+                                }
+                            }}
+                            >
+                                Clear text
+                            </Button>
+                            {isMobile && <Button
+                                    type="submit"
+                                    sx={{
+                                        width: '131px',
+                                        height: '41px',
+                                        my: {
+                                            xs: '10px',
+                                            sm: '15px',
+                                            md: '15px',
+                                            xl: '15px',
+                                        },
+                                        alignSelf: 'flex-end',
+                                        bgcolor: '#000000',
+                                        color: 'white',
+                                        zIndex: 0,
+                                        opacity: isLoading ? 0.5 : 1,
+                                        "&:hover": {
+                                            transition: '0.5s opacity',
+                                            bgcolor: '#000000',
+                                            opacity: '0.7'
+                                        }
+                                    }}
+                                >
+                                    Submit
+                                </Button>}
+                        </Box>
+                        
                     </Box>
                     <Box
                         sx={{
@@ -231,7 +279,7 @@ export const Form = () => {
                                 ) : <div className="form__output__placeholder">Your suggested SMART Objectives will be shown here</div>
                             }
                         </div>
-                        <Button
+                        {!isMobile && <Button
                             type="submit"
                             sx={{
                                 width: '131px',
@@ -255,7 +303,7 @@ export const Form = () => {
                             }}
                         >
                             Submit
-                        </Button>
+                        </Button>}
                     </Box>
                 </Box>
             </form>

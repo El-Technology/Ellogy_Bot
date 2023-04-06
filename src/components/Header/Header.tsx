@@ -10,7 +10,12 @@ export const Header = () => {
             justifyContent: 'space-between',
             alignItems: 'center',
             backgroundColor: '#000000',
-            padding: '10px 82px 10px 91px',
+            padding: {
+              xs:'10px 25px 10px 25px',
+              sm: '10px 82px 10px 91px',
+              md: '10px 82px 10px 91px',
+              xl: '10px 82px 10px 91px'
+            },
             boxSizing: 'content-box',
             borderBottom: '6px solid #C4C4C4 80%'
         }}
