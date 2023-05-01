@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { OpenAIApi, Configuration } from "openai";
 import { useMemo, useState } from "react";
-import { StepFlow } from "../StepFlow";
+import { CustomStepper } from "../CustomStepper";
 import "./Form.styles.scss";
 
 const propmtPrefix =
@@ -25,6 +25,7 @@ const isMobile = document.documentElement.clientWidth < 500;
 
 export const Form = () => {
   const { register, handleSubmit, watch, reset } = useForm<FormValues>();
+
   const [englishCompletionResult, setEnglishCompletionResult] = useState("");
   const [arabicCompletionResult, setArabicCompletionResult] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -40,8 +41,8 @@ export const Form = () => {
     reset();
   };
   const onSubmit = async (data: FormValues) => {
-    console.log(data);
-
+    setEnglishCompletionResult("");
+    setArabicCompletionResult("");
     setIsLoading(true);
     const request = {
       model: "text-davinci-003",
@@ -59,7 +60,6 @@ export const Form = () => {
         headers: undefined,
       });
       const choice = result.data.choices[0].text;
-      console.log(choice);
 
       const index = choice.indexOf("Arabic");
       setEnglishCompletionResult(
@@ -106,7 +106,14 @@ export const Form = () => {
         </Backdrop>
       )}
 
-      <Stack sx={{ pointerEvents: isLoading ? "none" : "all", mb: "15px" }}>
+      <Stack
+        sx={{
+          pointerEvents: isLoading ? "none" : "all",
+          mb: "15px",
+          height: "inherit",
+          width: "100%",
+        }}
+      >
         <Typography
           className="rtl-able"
           sx={{
@@ -119,22 +126,20 @@ export const Form = () => {
         >
           {t("createTicket:welcome")}
         </Typography>
-        <form
-          style={{ display: "flex", flexDirection: "column" }}
-          onSubmit={handleSubmit(onSubmit)}
-          onReset={handleReset}
-        >
-          <StepFlow>
+        <form style={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
+          <CustomStepper
+            finalFunc={handleSubmit(onSubmit)}
+            handleReset={handleReset}
+          >
             <Box
               sx={{
                 width: "100%",
                 display: "flex",
+                flexGrow: 1,
+                height: "inherit",
                 justifyContent: "space-between",
                 flexDirection: {
                   xs: "column",
-                  sm: "row",
-                  md: "row",
-                  xl: "row",
                 },
               }}
             >
@@ -142,6 +147,12 @@ export const Form = () => {
                 className="rtl-able"
                 {...register("title")}
                 sx={{
+                  width: {
+                    xs: "100%",
+                    sm: "48%",
+                    md: "48%",
+                    xl: "48%",
+                  },
                   mb: {
                     xs: "15px",
                     sm: "26px",
@@ -155,17 +166,18 @@ export const Form = () => {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
+
+                  height: {
+                    xs: "250px",
+                    sm: "600px",
+                    md: "600px",
+                    xl: "600px",
+                  },
                   justifyContent: {
                     xs: "flex-start",
                     sm: "flex-end",
                     md: "flex-end",
                     xl: "flex-end",
-                  },
-                  height: {
-                    xs: "162px",
-                    sm: "auto",
-                    md: "auto",
-                    xl: "auto",
                   },
                   width: {
                     xs: "100%",
@@ -207,7 +219,7 @@ export const Form = () => {
                     width: "100%",
                     height: "100%",
                     "& .MuiInputBase-root": {
-                      height: "50.3vh",
+                      height: "100%",
                       boxSizing: "content-box",
                       padding: "14px",
                       "& textarea": {
@@ -290,11 +302,12 @@ export const Form = () => {
               sx={{
                 display: "flex",
                 flexDirection: "column",
+
                 height: {
                   xs: "250px",
-                  sm: "auto",
-                  md: "auto",
-                  xl: "auto",
+                  sm: "600px",
+                  md: "600px",
+                  xl: "600px",
                 },
                 width: {
                   xs: "100%",
@@ -328,7 +341,15 @@ export const Form = () => {
                   </div>
                 )}
               </div>
-              {/* {!isMobile && (
+            </Box>
+          </CustomStepper>
+        </form>
+      </Stack>
+    </>
+  );
+};
+{
+  /* {!isMobile && (
                 <Button
                   type="submit"
                   sx={{
@@ -354,11 +375,5 @@ export const Form = () => {
                 >
                   {t("submit")}
                 </Button>
-              )} */}
-            </Box>
-          </StepFlow>
-        </form>
-      </Stack>
-    </>
-  );
-};
+              )} */
+}

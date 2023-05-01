@@ -2,41 +2,50 @@ import { Box, Button } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useState, FC, ReactNode } from "react";
 
-interface IStepFlowProps {
-  children: ReactNode[];
-
+interface ICustomStepperProps {
+  children: ReactNode[] | ReactNode;
+  finalFunc: () => {};
+  handleReset: () => void;
 }
 
-export const StepFlow: FC<IStepFlowProps> = ({ children }) => {
-  const [stepIndex, setStepIndex] = useState(0);
+export const CustomStepper: FC<ICustomStepperProps> = ({
+  children,
+  finalFunc,
+  handleReset,
+}) => {
+  const pages = Array.isArray(children) ? children : [children];
+  const [currentStep, setCurrentStep] = useState(0);
+  const [totalSteps] = useState(pages.length - 1);
   const { t } = useTranslation();
-  const isLast = stepIndex === children.length - 1;
-  const isFirst = stepIndex === 0;
-  const nextPage = () => {
-    setStepIndex((prev) => prev + 1);
 
+  const handleNext = () => {
+    setCurrentStep((curr) => curr + 1);
   };
-  const prevPage = () => {
-    setStepIndex((prev) => prev - 1);
+  const handleBack = () => {
+    setCurrentStep((curr) => curr - 1);
   };
-
+  const handleConfirm = () => {
+    finalFunc();
+    handleNext();
+  };
   return (
     <>
-      {children[stepIndex]}
+      <Box sx={{ height: "100%" }}>{pages[currentStep]}</Box>
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
+          mt: "auto",
         }}
       >
         <Button
           className="rtl-able"
-          type={isFirst ? "reset" : "button"}
-          onClick={!isFirst ? prevPage : () => {}}
+          onClick={currentStep === 0 ? handleReset : handleBack}
           sx={{
             width: "131px",
             minHeight: "41px",
             height: "41px",
+            textAlign: "center !important",
             my: {
               xs: "10px",
               sm: "15px",
@@ -59,16 +68,17 @@ export const StepFlow: FC<IStepFlowProps> = ({ children }) => {
             },
           }}
         >
-          {t(isFirst ? "clear" : "prev")}
+          {t(currentStep === 0 ? "clear" : "prev")}
         </Button>
 
         <Button
           className="rtl-able"
-          type={isLast ? "submit" : "button"}
-          onClick={!isLast ? nextPage : () => {}}
+          style={{ display: currentStep === totalSteps ? "none" : "block" }}
+          onClick={currentStep === totalSteps - 1 ? handleConfirm : handleNext}
           sx={{
             width: "131px",
             height: "41px",
+            textAlign: "center !important",
             my: {
               xs: "10px",
               sm: "15px",
@@ -86,7 +96,7 @@ export const StepFlow: FC<IStepFlowProps> = ({ children }) => {
             },
           }}
         >
-          {t(isLast ? "submit" : "next")}
+          {t(currentStep === totalSteps - 1 ? "submit" : "next")}
         </Button>
       </Box>
     </>
