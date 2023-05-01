@@ -126,7 +126,13 @@ export const Form = () => {
         >
           {t("createTicket:welcome")}
         </Typography>
-        <form style={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
+        <form
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            flexGrow: 1,
+          }}
+        >
           <CustomStepper
             finalFunc={handleSubmit(onSubmit)}
             handleReset={handleReset}
@@ -147,12 +153,7 @@ export const Form = () => {
                 className="rtl-able"
                 {...register("title")}
                 sx={{
-                  width: {
-                    xs: "100%",
-                    sm: "48%",
-                    md: "48%",
-                    xl: "48%",
-                  },
+                  width: "100%",
                   mb: {
                     xs: "15px",
                     sm: "26px",
@@ -169,9 +170,9 @@ export const Form = () => {
 
                   height: {
                     xs: "250px",
-                    sm: "600px",
-                    md: "600px",
-                    xl: "600px",
+                    sm: "450px",
+                    md: "500px",
+                    xl: "500px",
                   },
                   justifyContent: {
                     xs: "flex-start",
@@ -179,18 +180,7 @@ export const Form = () => {
                     md: "flex-end",
                     xl: "flex-end",
                   },
-                  width: {
-                    xs: "100%",
-                    sm: "48%",
-                    md: "48%",
-                    xl: "48%",
-                  },
-                  mb: {
-                    xs: "65px",
-                    sm: "auto",
-                    md: "auto",
-                    xl: "auto",
-                  },
+                  width: "100%",
                 }}
               >
                 <TextField
@@ -210,9 +200,6 @@ export const Form = () => {
                         height: "100%",
                       },
                       shrink: true,
-                      "&::placeholder": {
-                        position: "absolute",
-                      },
                     },
                   }}
                   sx={{
@@ -304,17 +291,11 @@ export const Form = () => {
                 flexDirection: "column",
 
                 height: {
-                  xs: "250px",
-                  sm: "600px",
-                  md: "600px",
-                  xl: "600px",
+                  xs: "321px",
+                  sm: "532px",
+                  md: "582px",
                 },
-                width: {
-                  xs: "100%",
-                  sm: "48%",
-                  md: "48%",
-                  xl: "48%",
-                },
+                width: "100%",
               }}
             >
               <div className="form__output rtl-able">

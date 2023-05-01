@@ -36,6 +36,7 @@ export const CustomStepper: FC<ICustomStepperProps> = ({
           display: "flex",
           justifyContent: "space-between",
           mt: "auto",
+          gap: "15px"
         }}
       >
         <Button
