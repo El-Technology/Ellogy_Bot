@@ -17,8 +17,9 @@ export const MainPageLayout = ({ children }: { children: ReactNode }) => {
             md: "calc(100vw - 91px)",
             xl: "calc(100vw - 91px)",
           },
+          height: "auto",
           maxHeight: {
-            xs: "100vh",
+            xs: "auto",
             sm: "calc(100vh - 70px)"
           },
           position: "absolute",
@@ -37,6 +38,7 @@ export const MainPageLayout = ({ children }: { children: ReactNode }) => {
             xl: "70px",
           },
           paddingTop: "30px",
+          paddingBottom: "30px",
           paddingRight: {
             xs: "30px",
             sm: "82px",

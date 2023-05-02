@@ -1,6 +1,7 @@
 import {
   Backdrop,
   Box,
+  Button,
   CircularProgress,
   Stack,
   TextField,
@@ -10,7 +11,6 @@ import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { OpenAIApi, Configuration } from "openai";
 import { useMemo, useState } from "react";
-import { CustomStepper } from "../CustomStepper";
 import "./Form.styles.scss";
 
 const propmtPrefix =
@@ -133,56 +133,43 @@ export const Form = () => {
             flexGrow: 1,
           }}
         >
-          <CustomStepper
-            finalFunc={handleSubmit(onSubmit)}
-            handleReset={handleReset}
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              flexGrow: 1,
+              height: "inherit",
+              justifyContent: "space-between",
+              flexDirection: {
+                xs: "column",
+              },
+            }}
           >
-            <Box
+            <TextField
+              className="rtl-able"
+              {...register("title")}
               sx={{
                 width: "100%",
-                display: "flex",
-                flexGrow: 1,
-                height: "inherit",
-                justifyContent: "space-between",
-                flexDirection: {
-                  xs: "column",
+                mb: {
+                  xs: "15px",
+                  sm: "26px",
+                  md: "26px",
+                  xl: "26px",
                 },
               }}
+              placeholder={t("inputs:title") || ""}
+            />
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", tablet: "row" },
+                justifyContent: { xs: "center", tablet: "space-between" },
+                alignItems: { xs: "center", sm: "flex-start" },
+                columnGap: { sm: "25px", md: "50px" },
+                width: "100%",
+              }}
             >
-              <TextField
-                className="rtl-able"
-                {...register("title")}
-                sx={{
-                  width: "100%",
-                  mb: {
-                    xs: "15px",
-                    sm: "26px",
-                    md: "26px",
-                    xl: "26px",
-                  },
-                }}
-                placeholder={t("inputs:title") || ""}
-              />
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-
-                  height: {
-                    xs: "250px",
-                    sm: "450px",
-                    md: "500px",
-                    xl: "500px",
-                  },
-                  justifyContent: {
-                    xs: "flex-start",
-                    sm: "flex-end",
-                    md: "flex-end",
-                    xl: "flex-end",
-                  },
-                  width: "100%",
-                }}
-              >
+              <Box sx={{ width: { xs: "100%", tablet: "48%" } }}>
                 <TextField
                   className="rtl-able"
                   {...register("question")}
@@ -203,8 +190,14 @@ export const Form = () => {
                     },
                   }}
                   sx={{
+                    height: {
+                      xs: "250px",
+                      sm: "350px",
+                      tablet: "450px",
+                      md: "500px",
+                      xl: "50vh",
+                    },
                     width: "100%",
-                    height: "100%",
                     "& .MuiInputBase-root": {
                       height: "100%",
                       boxSizing: "content-box",
@@ -219,16 +212,19 @@ export const Form = () => {
                 <Box
                   sx={{
                     display: "flex",
+                    alignItems: "center",
                     justifyContent: "space-between",
+                    gap: "15px",
                   }}
                 >
-                  {/* <Button
+                  <Button
                     className="rtl-able"
-                    type="reset"
+                    onClick={handleReset}
                     sx={{
                       width: "131px",
                       minHeight: "41px",
                       height: "41px",
+                      textAlign: "center !important",
                       my: {
                         xs: "10px",
                         sm: "15px",
@@ -244,7 +240,6 @@ export const Form = () => {
                       bgcolor: "#000000",
                       color: "white",
                       zIndex: 0,
-                      opacity: isLoading ? 0.5 : 1,
                       "&:hover": {
                         transition: "0.5s opacity",
                         bgcolor: "#000000",
@@ -253,108 +248,82 @@ export const Form = () => {
                     }}
                   >
                     {t("clear")}
-                  </Button> */}
-                  {/* {isMobile && (
-                    <Button
-                      className="rtl-able"
-                      type="submit"
-                      sx={{
-                        width: "131px",
-                        height: "41px",
-                        my: {
-                          xs: "10px",
-                          sm: "15px",
-                          md: "15px",
-                          xl: "15px",
-                        },
-                        alignSelf: "flex-end",
+                  </Button>
+                  <Button
+                    className="rtl-able"
+                    style={{
+                      display: "block",
+                    }}
+                    onClick={handleSubmit(onSubmit)}
+                    type="submit"
+                    sx={{
+                      width: "131px",
+                      height: "41px",
+                      textAlign: "center !important",
+                      my: {
+                        xs: "10px",
+                        sm: "15px",
+                        md: "15px",
+                        xl: "15px",
+                      },
+                      alignSelf: "flex-end",
+                      bgcolor: "#000000",
+                      color: "white",
+                      zIndex: 0,
+                      "&:hover": {
+                        transition: "0.5s opacity",
                         bgcolor: "#000000",
-                        color: "white",
-                        zIndex: 0,
-                        opacity: isLoading ? 0.5 : 1,
-                        "&:hover": {
-                          transition: "0.5s opacity",
-                          bgcolor: "#000000",
-                          opacity: "0.7",
-                        },
-                      }}
-                    >
-                      Submit
-                    </Button>
-                  )} */}
+                        opacity: "0.7",
+                      },
+                    }}
+                  >
+                    {t("submit")}
+                  </Button>
                 </Box>
               </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  height: {
+                    xs: "250px",
+                    sm: "350px",
+                    tablet: "450px",
+                    md: "500px",
+                    xl: "50vh",
+                  },
+                  width: { xs: "100%", tablet: "48%" },
+                }}
+              >
+                <div className="form__output rtl-able">
+                  {englishCompletionResult && arabicCompletionResult ? (
+                    <>
+                      <div
+                        dir="ltr"
+                        style={{ textAlign: "left" }}
+                        dangerouslySetInnerHTML={{
+                          __html: englishCompletionResult,
+                        }}
+                      />
+                      <br />
+                      <div
+                        dir="rtl"
+                        dangerouslySetInnerHTML={{
+                          __html: arabicCompletionResult,
+                        }}
+                      />
+                    </>
+                  ) : (
+                    <div className="form__output__placeholder">
+                      {t("inputs:ticketResult")}
+                    </div>
+                  )}
+                </div>
+              </Box>
             </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-
-                height: {
-                  xs: "321px",
-                  sm: "532px",
-                  md: "582px",
-                },
-                width: "100%",
-              }}
-            >
-              <div className="form__output rtl-able">
-                {englishCompletionResult && arabicCompletionResult ? (
-                  <>
-                    <div
-                      dir="ltr"
-                      style={{ textAlign: "left" }}
-                      dangerouslySetInnerHTML={{
-                        __html: englishCompletionResult,
-                      }}
-                    />
-                    <br />
-                    <div
-                      dir="rtl"
-                      dangerouslySetInnerHTML={{
-                        __html: arabicCompletionResult,
-                      }}
-                    />
-                  </>
-                ) : (
-                  <div className="form__output__placeholder">
-                    {t("inputs:ticketResult")}
-                  </div>
-                )}
-              </div>
-            </Box>
-          </CustomStepper>
+          </Box>
         </form>
       </Stack>
     </>
   );
 };
-{
-  /* {!isMobile && (
-                <Button
-                  type="submit"
-                  sx={{
-                    width: "131px",
-                    height: "41px",
-                    my: {
-                      xs: "10px",
-                      sm: "15px",
-                      md: "15px",
-                      xl: "15px",
-                    },
-                    alignSelf: "flex-end",
-                    bgcolor: "#000000",
-                    color: "white",
-                    zIndex: 0,
-                    opacity: isLoading ? 0.5 : 1,
-                    "&:hover": {
-                      transition: "0.5s opacity",
-                      bgcolor: "#000000",
-                      opacity: "0.7",
-                    },
-                  }}
-                >
-                  {t("submit")}
-                </Button>
-              )} */
-}
